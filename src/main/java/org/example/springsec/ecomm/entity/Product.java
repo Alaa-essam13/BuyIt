@@ -14,8 +14,8 @@ import lombok.*;
 @Setter
 @Getter
 public class Product {
-
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     @NotNull
     private String name;

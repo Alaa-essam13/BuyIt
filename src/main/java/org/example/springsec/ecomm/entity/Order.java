@@ -16,6 +16,7 @@ import java.util.List;
 @Getter
 public class Order {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private Double totalPrice;
     private String status;

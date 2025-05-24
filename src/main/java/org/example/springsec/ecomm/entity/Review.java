@@ -16,6 +16,7 @@ import java.util.Date;
 @Getter
 public class Review {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     @Min(0)
     @Max(5)

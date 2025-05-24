@@ -2,8 +2,6 @@ package org.example.springsec.ecomm.service;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.example.springsec.ecomm.entity.User;
 import org.example.springsec.ecomm.repo.UserRepo;
 import org.example.springsec.ecomm.validators.UserValidator;

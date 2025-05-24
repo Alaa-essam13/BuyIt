@@ -12,6 +12,7 @@ import lombok.*;
 @Getter
 public class Address {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String street;
     private String city;

@@ -15,6 +15,7 @@ import java.util.List;
 @Getter
 public class Cart {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private Date createdDate;
 

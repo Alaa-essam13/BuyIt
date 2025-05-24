@@ -1,8 +1,6 @@
 package org.example.springsec.ecomm.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
@@ -16,6 +14,7 @@ import java.util.Date;
 @Getter
 public class Payment {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private int amount;
     private Date paymentDate;

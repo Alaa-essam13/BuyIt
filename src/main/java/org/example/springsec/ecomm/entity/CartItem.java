@@ -12,6 +12,7 @@ import lombok.*;
 @Getter
 public class CartItem {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private int quantity;
     private Double price;

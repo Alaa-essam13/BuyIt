@@ -14,6 +14,7 @@ import java.util.List;
 @Getter
 public class OrderItem {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private int quantity;
     private Double price;

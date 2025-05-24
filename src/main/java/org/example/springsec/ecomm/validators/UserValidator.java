@@ -17,7 +17,7 @@ public class UserValidator<T extends User> {
     }
 
     public UserValidator<T> validateEmail() {
-        if (user.getEmail() == null) {
+        if (user.getEmail() == null||user.getEmail().isBlank()) {
             throw new IllegalArgumentException("Email cannot be null");
         }
         if (userRepo.findByEmail(user.getEmail()).isPresent()) {
@@ -27,14 +27,14 @@ public class UserValidator<T extends User> {
     }
 
     public UserValidator<T> validatePassword() {
-        if (user.getPassword() == null) {
+        if (user.getPassword() == null||user.getPassword().isBlank()) {
             throw new IllegalArgumentException("Password cannot be null");
         }
         return this;
     }
 
     public UserValidator<T> validateUsername() {
-        if (user.getUsername() == null) {
+        if (user.getUsername() == null||user.getUsername().isBlank()) {
             throw new IllegalArgumentException("Username cannot be null");
         }
         if (userRepo.findByUsername(user.getUsername()).isPresent()) {
