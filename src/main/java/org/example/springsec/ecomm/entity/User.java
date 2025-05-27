@@ -27,6 +27,7 @@ public class User {
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$")
     private String password;
     private Boolean enabled;
+
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
 

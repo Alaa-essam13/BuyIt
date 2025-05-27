@@ -1,6 +1,7 @@
 package org.example.springsec.ecomm.controller;
 
 import lombok.AllArgsConstructor;
+import org.example.springsec.ecomm.dto.UserDto;
 import org.example.springsec.ecomm.entity.User;
 import org.example.springsec.ecomm.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +22,13 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id){
-        return ResponseEntity.ok(userService.getUserById(id));
+    public ResponseEntity<UserDto> getUserById(@PathVariable Long id){
+        return ResponseEntity.ok(userService.getById(id));
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Void> addUser(@RequestBody User user) {
-        userService.saveUser(user);
+    public ResponseEntity<Void> addUser(@RequestBody UserDto userDto) {
+        userService.saveUser(userDto);
         return ResponseEntity.ok().build();
     }
 
@@ -37,8 +38,8 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
     @PutMapping("/update")
-    public ResponseEntity<Void> updateUser(@RequestBody User user){
-        userService.updateUser(user);
+    public ResponseEntity<Void> updateUser(@RequestParam("id") Long id,@RequestBody UserDto userDto){
+        userService.updateUser(id,userDto);
         return ResponseEntity.ok().build();
     }
 
