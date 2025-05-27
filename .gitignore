@@ -18,7 +18,6 @@ target/
 *.iws
 *.iml
 *.ipr
-src/main/resources/application-dev.properties
 
 ### NetBeans ###
 /nbproject/private/
@@ -34,4 +33,4 @@ build/
 .vscode/
 
 
-!**/src/main/resources/application-dev.properties
+src/main/resources/application-dev.properties
