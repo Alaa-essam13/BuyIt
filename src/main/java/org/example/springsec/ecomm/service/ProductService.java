@@ -47,7 +47,12 @@ public class ProductService {
         productRepo.deleteById(id);
     }
 
-
+    public List<ProductDto> getAll() {
+        return productRepo.findAll().stream()
+                .map(p ->
+                    new ProductDto(p.getName(), p.getDescription(), p.getPrice(), p.getStock(), p.getImageUrl())
+                ).toList();
+    }
 
 
 }
