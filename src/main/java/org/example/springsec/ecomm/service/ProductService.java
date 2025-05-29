@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.springsec.ecomm.dto.ProductDto;
 import org.example.springsec.ecomm.entity.Product;
 import org.example.springsec.ecomm.repo.ProductRepo;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public class ProductService {
                 .build();
     }
 
-    public void addProduct(ProductDto productDto) {
+    public ResponseEntity<Void> addProduct(ProductDto productDto) {
         productRepo.save(Product.builder()
                 .name(productDto.getName())
                 .price(productDto.getPrice())
@@ -41,10 +42,12 @@ public class ProductService {
                 .stock(productDto.getStock())
                 .imageUrl(productDto.getImageUrl())
                 .build());
+        return ResponseEntity.ok().build();
     }
 
-    public void deleteById(Long id) {
+    public ResponseEntity<Void> deleteById(Long id) {
         productRepo.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 
     public List<ProductDto> getAll() {

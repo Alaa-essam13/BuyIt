@@ -5,8 +5,7 @@ import org.example.springsec.ecomm.dto.ProductDto;
 import org.example.springsec.ecomm.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,6 +19,26 @@ public class ProductController {
     @GetMapping("/all")
     public ResponseEntity<List<ProductDto>> getAllProducts() {
         return ResponseEntity.ok(productService.getAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDto> get(@PathVariable Long id) {
+        return ResponseEntity.ok(productService.getById(id));
+    }
+
+    @GetMapping("/brand/{id}")
+    public ResponseEntity<List<ProductDto>> getProductDto(@PathVariable Long id) {
+        return ResponseEntity.ok(productService.getAllByBrandId(id));
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<Void> postProductDto(@RequestBody ProductDto productDto) {
+        return productService.addProduct(productDto);
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> deleteProductDto(@RequestParam("id") Long id) {
+        return productService.deleteById(id);
     }
 
 }
