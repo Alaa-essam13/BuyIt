@@ -1,5 +1,6 @@
 package org.example.springsec.ecomm.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,11 +10,7 @@ import lombok.Setter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class ProductDto {
+public class CategoryDto {
     private String name;
     private String description;
-    private Double price;
-    private int stock;
-    private String imageUrl;
-
 }

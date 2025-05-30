@@ -8,11 +8,11 @@ import java.util.List;
 
 @Entity
 @Table(name = "_category")
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
+@Builder
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
