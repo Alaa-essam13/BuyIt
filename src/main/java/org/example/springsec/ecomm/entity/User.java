@@ -8,6 +8,8 @@ import lombok.*;
 
 import java.util.List;
 
+import static jakarta.persistence.CascadeType.*;
+
 @Entity
 @Table(name = "_users")
 @AllArgsConstructor
@@ -28,16 +30,16 @@ public class User {
     private String password;
     private Boolean enabled;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = {PERSIST,MERGE})
     private List<Order> orders;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id")
     private Cart cart;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = {PERSIST,MERGE,REMOVE})
     private List<Address> addresses;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = {PERSIST,MERGE,REMOVE})
     private List<Review> reviews;
 }

@@ -34,13 +34,13 @@ public class UserService {
         userRepo.save(user);
     }
 
-    private User getUserById(@NotNull Long id) {
+    public User getUserById(@NotNull Long id) {
         return userRepo.findById(id).orElseThrow();
     }
 
     public UserDto getById(@NotNull Long id) {
         User user = userRepo.findById(id).orElseThrow();
-        return UserDto.builder().username(user.getUsername()).email(user.getEmail()).password(user.getPassword()).build();
+        return UserDto.builder().id(user.getId()).username(user.getUsername()).email(user.getEmail()).password(user.getPassword()).build();
     }
 
     public User getUserByEmail(@NotNull String email) {

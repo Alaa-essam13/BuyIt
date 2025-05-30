@@ -4,12 +4,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+
 @Setter
 @Getter
 @Builder
-public class UserDto {
+public class PaymentDto {
     private Long id;
-    private String username;
-    private String email;
-    private String password;
+    private int amount;
+    private String status;
+    private int paymentMethod;
 }

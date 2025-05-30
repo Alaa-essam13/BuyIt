@@ -5,7 +5,6 @@ import lombok.*;
 
 @Entity
 @Table(name = "_address")
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
@@ -23,4 +22,13 @@ public class Address {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "street='" + street + '\'' +
+                ", city='" + city + '\'' +
+                ", country='" + country + '\'' +
+                '}';
+    }
 }
