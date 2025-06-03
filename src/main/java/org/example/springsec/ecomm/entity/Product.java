@@ -1,10 +1,11 @@
 package org.example.springsec.ecomm.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "_product")
@@ -26,13 +27,10 @@ public class Product {
     private int stock;
     private String imageUrl;
 
-    @ManyToOne
-    @JoinColumn(name = "order_item_id")
-    private OrderItem orderItem;
+    @OneToOne(mappedBy = "product")
+    private CartItem cartItem;
 
-    @ManyToOne
-    @JoinColumn(name = "cart_id")
-    private Cart cart;
+
 
     @ManyToOne
     @JoinColumn(name = "category_id")

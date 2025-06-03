@@ -3,9 +3,11 @@ package org.example.springsec.ecomm.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import static jakarta.persistence.CascadeType.PERSIST;
+
 @Entity
 @Table(name = "_cartItem")
-@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
@@ -21,5 +23,7 @@ public class CartItem {
     @JoinColumn(name = "cart_id")
     private Cart cart;
 
-
+    @OneToOne(cascade = PERSIST)
+    @JoinColumn(name = "product_id")
+    private Product product;
 }

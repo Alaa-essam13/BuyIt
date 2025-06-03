@@ -3,12 +3,14 @@ package org.example.springsec.ecomm.service;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.example.springsec.ecomm.dto.UserDto;
+import org.example.springsec.ecomm.entity.Cart;
 import org.example.springsec.ecomm.entity.User;
 import org.example.springsec.ecomm.repo.UserRepo;
 import org.example.springsec.ecomm.validators.UserValidator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -30,6 +32,7 @@ public class UserService {
                 .password(userDto.getPassword())
                 .username(userDto.getUsername())
                 .enabled(true)
+                .cart(Cart.builder().createdDate(LocalDateTime.now()).build())
                 .build();
         userRepo.save(user);
     }
@@ -76,6 +79,8 @@ public class UserService {
         }
         userRepo.save(user);
     }
+
+
 
 
 }

@@ -3,6 +3,7 @@ package org.example.springsec.ecomm.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    private Date createdDate;
+    private LocalDateTime createdDate;
 
     @OneToOne(mappedBy = "cart")
     private User user;
@@ -25,6 +26,5 @@ public class Cart {
     @OneToMany(mappedBy = "cart")
     private List<CartItem> cartItems;
 
-    @OneToMany(mappedBy = "cart")
-    private List<Product> product;
+
 }

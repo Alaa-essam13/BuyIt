@@ -33,7 +33,7 @@ public class User {
     @OneToMany(mappedBy = "user",cascade = {PERSIST,MERGE})
     private List<Order> orders;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = PERSIST)
     @JoinColumn(name = "cart_id")
     private Cart cart;
 

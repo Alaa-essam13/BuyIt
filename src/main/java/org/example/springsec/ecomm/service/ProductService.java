@@ -19,7 +19,7 @@ public class ProductService {
         return productRepo.findByBrand_Id(brandId);
     }
 
-    private Product getProduct(Long id) {
+    public Product getProduct(Long id) {
         return productRepo.findById(id).orElseThrow();
     }
 
