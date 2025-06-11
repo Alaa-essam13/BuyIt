@@ -5,6 +5,8 @@ import org.example.springsec.ecomm.entity.Cart;
 import org.example.springsec.ecomm.entity.CartItem;
 import org.example.springsec.ecomm.entity.Product;
 import org.example.springsec.ecomm.repo.CartItemRepo;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,11 +19,33 @@ public class CartItemService {
 
     private final ProductService productService;
 
+    private CartItem getCartItem(Long id) {
+        return cartItemRepo.findById(id).orElse(null);
+    }
 
-    public void addItemToCart(Long productId, Long userId,int quantity) {
-        Cart c=cartService.getCartByUserId(userId);
+
+    public ResponseEntity<Void> addItemToCart(Long productId, Long userId, int quantity) {
+        Cart c = cartService.getCartByUserId(userId);
         Product p = productService.getProduct(productId);
-        cartItemRepo.save(CartItem.builder().cart(c).product(p).quantity(quantity).price(p.getPrice()).build());
+        if (p.getStock() < quantity) {
+            cartItemRepo.save(CartItem.builder().cart(c).product(p).quantity(quantity).price(p.getPrice()).build());
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    public ResponseEntity<Void> removeItemFromCart(Long cartItemId) {
+        CartItem cartItem=getCartItem(cartItemId);
+        cartItemRepo.delete(cartItem);
+        return ResponseEntity.ok().build();
+    }
+
+    public ResponseEntity<Void> changeQuantity(Long cartItemId, Integer quantity) {
+        CartItem cartItem = getCartItem(cartItemId);
+        cartItem.setQuantity(quantity);
+        cartItemRepo.save(cartItem);
+        return ResponseEntity.ok().build();
     }
 
 
