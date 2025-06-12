@@ -1,5 +1,6 @@
 package org.example.springsec.ecomm.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -28,6 +29,7 @@ public class Product {
     private String imageUrl;
 
     @OneToOne(mappedBy = "product")
+    @JsonIgnore
     private CartItem cartItem;
 
 

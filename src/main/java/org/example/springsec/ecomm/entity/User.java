@@ -1,5 +1,6 @@
 package org.example.springsec.ecomm.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -35,6 +36,7 @@ public class User {
 
     @OneToOne(cascade = PERSIST)
     @JoinColumn(name = "cart_id")
+    @JsonIgnore
     private Cart cart;
 
     @OneToMany(mappedBy = "user",cascade = {PERSIST,MERGE,REMOVE})
