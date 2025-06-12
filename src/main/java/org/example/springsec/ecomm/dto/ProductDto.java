@@ -15,5 +15,7 @@ public class ProductDto {
     private Double price;
     private int stock;
     private String imageUrl;
+    private Long cat_id;
+    private Long brand_id;
 
 }

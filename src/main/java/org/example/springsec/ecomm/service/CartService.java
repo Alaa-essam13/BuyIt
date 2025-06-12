@@ -32,7 +32,7 @@ public class CartService {
                 .orElse(Collections.emptyList());
     }
 
-    public ResponseEntity<Void> deleteCartItem() {
+    public ResponseEntity<Void> deleteCartItem(Long userId, Long cartItemId) {
 
         return ResponseEntity.ok().build();
     }
