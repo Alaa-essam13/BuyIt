@@ -3,6 +3,7 @@ package org.example.springsec.ecomm.service;
 import lombok.RequiredArgsConstructor;
 import org.example.springsec.ecomm.entity.Cart;
 import org.example.springsec.ecomm.entity.CartItem;
+import org.example.springsec.ecomm.repo.CartItemRepo;
 import org.example.springsec.ecomm.repo.CartRepo;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -30,10 +31,5 @@ public class CartService {
         return cartRepo.getCartItemsById(userId)
                 .map(Cart::getCartItems)
                 .orElse(Collections.emptyList());
-    }
-
-    public ResponseEntity<Void> deleteCartItem(Long userId, Long cartItemId) {
-
-        return ResponseEntity.ok().build();
     }
 }

@@ -24,4 +24,9 @@ public class CartItemController {
         return cartItemService.deleteCartItem(cartId,cartItemId);
     }
 
+    @DeleteMapping("/delete/all")
+    public ResponseEntity<Void> deleteAllItemsInCart(@RequestParam("c_id") Long cartId) {
+        return cartItemService.flushCart(cartId);
+    }
+
 }

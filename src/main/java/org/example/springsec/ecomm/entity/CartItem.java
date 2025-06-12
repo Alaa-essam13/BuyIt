@@ -25,7 +25,7 @@ public class CartItem {
     @JsonIgnore
     private Cart cart;
 
-    @OneToOne(cascade = PERSIST)
+    @OneToOne
     @JoinColumn(name = "product_id")
     private Product product;
 }

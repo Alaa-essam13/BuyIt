@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Log4j2
 public class CartItemService {
 
     private final CartItemRepo cartItemRepo;
@@ -31,11 +30,9 @@ public class CartItemService {
     public ResponseEntity<Void> addItemToCart(Long productId, Long userId, int quantity) {
         Cart c = cartService.getCartByUserId(userId);
         Product p = productService.getProduct(productId);
-        log.info("Adding item to cart " + c.getId());
         if (p.getStock() >= quantity) {
             CartItem ci =CartItem.builder().cart(c).product(p).quantity(quantity).price(p.getPrice()).build();
             cartItemRepo.save(ci);
-            log.info("Added product to cart item"+ci.getId());
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -59,6 +56,11 @@ public class CartItemService {
     public ResponseEntity<Void> deleteCartItem(Long cartId,Long cartItemId) {
          cartItemRepo.deletecartItem(cartId,cartItemId);
          return ResponseEntity.ok().build();
+    }
+    @Transactional
+    public ResponseEntity<Void> flushCart(Long cartId) {
+        cartItemRepo.flushcart(cartId);
+        return ResponseEntity.ok().build();
     }
 
 
