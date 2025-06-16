@@ -5,9 +5,14 @@ import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import org.example.springsec.ecomm.dto.SearchReq;
+import org.example.springsec.ecomm.dto.SortReq;
 import org.example.springsec.ecomm.entity.Brand;
 import org.example.springsec.ecomm.entity.Category;
 import org.example.springsec.ecomm.entity.Product;
+import org.example.springsec.ecomm.entity.Review;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +23,7 @@ public class ProductCriteriaDAO {
 
     private final EntityManager em;
 
-    public List<Product> searchForProduct(SearchReq searchReq) {
+    public Page<Product> searchForProduct(SearchReq searchReq, Pageable pageable) {
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Product> cq = cb.createQuery(Product.class);
@@ -39,13 +44,85 @@ public class ProductCriteriaDAO {
         if (searchReq.getBrandName() != null && !searchReq.getBrandName().isEmpty()) {
             predicates.add(cb.like(joinBrand.get("name"), searchReq.getBrandName()));
         }
-        cq.where(cb.or(predicates.toArray(new Predicate[0])));
+        if(!predicates.isEmpty()){
+            cq.where(cb.or(predicates.toArray(new Predicate[0])));
+        }
 
         TypedQuery<Product> query = em.createQuery(cq);
+        query.setFirstResult((int) pageable.getOffset());
+        query.setMaxResults(pageable.getPageSize());
 
-        return query.getResultList();
+        long total = countProducts(searchReq);
+
+        List<Product> products = query.getResultList();
+
+        return new PageImpl<>(products, pageable, total);
 
     }
+
+    private long countProducts(SearchReq searchReq) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        Root<Product> root = cq.from(Product.class);
+
+        Join<Product, Brand> joinBrand = root.join("brand");
+        Join<Product, Category> joinCategory = root.join("category");
+
+        List<Predicate> predicates = new ArrayList<>();
+
+        if (searchReq.getTitle() != null && !searchReq.getTitle().isEmpty()) {
+            predicates.add(cb.like(root.get("title"), "%" + searchReq.getTitle() + "%"));
+        }
+        if (searchReq.getCategoryName() != null && !searchReq.getCategoryName().isEmpty()) {
+            predicates.add(cb.like(joinCategory.get("name"), "%" + searchReq.getCategoryName() + "%"));
+        }
+        if (searchReq.getBrandName() != null && !searchReq.getBrandName().isEmpty()) {
+            predicates.add(cb.like(joinBrand.get("name"), "%" + searchReq.getBrandName() + "%"));
+        }
+
+        if (!predicates.isEmpty()) {
+            cq.where(cb.or(predicates.toArray(new Predicate[0])));
+        }
+
+        cq.select(cb.count(root));
+        return em.createQuery(cq).getSingleResult();
+    }
+
+    Page<Product> sortProducts(Pageable pageable, SortReq sortReq) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Product> cq = cb.createQuery(Product.class);
+        Root<Product> root = cq.from(Product.class);
+        cq.groupBy(root.get("id"));
+        if(sortReq.getField().equals("rev")){
+            Join<Product, Review> joinBrand = root.join("reviews");
+            cq.orderBy(cb.desc(joinBrand.get("id")));
+        }else if(sortReq.getField().equals("date")){
+
+        }else if(sortReq.getField().equals("cat")){
+
+        }else {
+            cq.orderBy(cb.desc(root.get("id")));
+        }
+
+        TypedQuery<Product> query = em.createQuery(cq);
+        query.setFirstResult((int) pageable.getOffset());
+        query.setMaxResults(pageable.getPageSize());
+
+        Long total=countProductsForSorting();
+
+       return new PageImpl<>(query.getResultList(), pageable, total);
+
+    }
+
+    private long countProductsForSorting() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        Root<Product> root = cq.from(Product.class);
+        cq.select(cb.countDistinct(root.get("id")));
+        return em.createQuery(cq).getSingleResult();
+    }
+
+
 
 
 }

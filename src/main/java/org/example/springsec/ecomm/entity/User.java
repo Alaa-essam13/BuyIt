@@ -32,6 +32,7 @@ public class User {
     private Boolean enabled;
 
     @OneToMany(mappedBy = "user",cascade = {PERSIST,MERGE})
+    @JsonIgnore
     private List<Order> orders;
 
     @OneToOne(cascade = PERSIST)
@@ -43,5 +44,6 @@ public class User {
     private List<Address> addresses;
 
     @OneToMany(mappedBy = "user",cascade = {PERSIST,MERGE,REMOVE})
+    @JsonIgnore
     private List<Review> reviews;
 }
