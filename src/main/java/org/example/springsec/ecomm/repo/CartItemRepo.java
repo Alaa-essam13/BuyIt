@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-@Repository
 public interface CartItemRepo extends JpaRepository<CartItem, Long> {
 
     @Query("delete from CartItem ci where ci.cart.id = :cartId and ci.id = :cartItemId")

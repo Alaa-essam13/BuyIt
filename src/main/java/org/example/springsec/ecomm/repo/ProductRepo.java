@@ -10,10 +10,18 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface ProductRepo extends JpaRepository<Product, Long> {
 
-    @Query("select new org.example.springsec.ecomm.dto.ProductDto(p.name, p.description, p.price, p.stock, p.imageUrl, p.category.id, p.brand.id) from Product p where p.brand.id = :brandId")
+    @Query("""
+        select new org.example.springsec.ecomm.dto.ProductDto(
+            p.name
+            , p.description
+            , p.price
+            , p.stock
+            , p.imageUrl
+            , p.category.id
+            , p.brand.id) 
+                from Product p where p.brand.id = :brandId""")
     List<ProductDto> findByBrand_Id(Long brandId);
 
     @EntityGraph(attributePaths = {"brand", "category"})
