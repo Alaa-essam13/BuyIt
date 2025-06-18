@@ -1,7 +1,7 @@
 package org.example.springsec.ecomm.service;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.example.springsec.ecomm.entity.Cart;
 import org.example.springsec.ecomm.entity.CartItem;
 import org.example.springsec.ecomm.entity.Product;
@@ -41,22 +41,27 @@ public class CartItemService {
 
     public ResponseEntity<Void> removeItemFromCart(Long cartItemId) {
         CartItem cartItem=getCartItem(cartItemId);
-        cartItemRepo.delete(cartItem);
+        if (cartItem!=null) {
+            cartItemRepo.deleteById(cartItemId);
+        }
         return ResponseEntity.ok().build();
     }
 
-    public ResponseEntity<Void> changeQuantity(Long cartItemId, Integer quantity) {
+    public ResponseEntity<Void> changeQuantity(Long cartItemId, int quantity) {
         CartItem cartItem = getCartItem(cartItemId);
-        cartItem.setQuantity(quantity);
-        cartItemRepo.save(cartItem);
+        if(quantity<0){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        if (quantity==0){
+            return removeItemFromCart(cartItemId);
+        }
+        if (cartItem!=null) {
+            cartItem.setQuantity(quantity);
+            cartItemRepo.save(cartItem);
+        }
         return ResponseEntity.ok().build();
     }
 
-    @Transactional
-    public ResponseEntity<Void> deleteCartItem(Long cartId,Long cartItemId) {
-         cartItemRepo.deletecartItem(cartId,cartItemId);
-         return ResponseEntity.ok().build();
-    }
     @Transactional
     public ResponseEntity<Void> flushCart(Long cartId) {
         cartItemRepo.flushcart(cartId);

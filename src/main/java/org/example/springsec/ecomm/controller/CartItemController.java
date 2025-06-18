@@ -19,14 +19,20 @@ public class CartItemController {
         cartItemService.addItemToCart(productId, userId,quantity);
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<Void> deleteVoid(@RequestParam("c_id") Long cartId,@RequestParam("ci_id") Long cartItemId) {
-        return cartItemService.deleteCartItem(cartId,cartItemId);
-    }
 
     @DeleteMapping("/delete/all")
     public ResponseEntity<Void> deleteAllItemsInCart(@RequestParam("c_id") Long cartId) {
         return cartItemService.flushCart(cartId);
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> deleteItemFromCart(@RequestParam("ci_id") Long id) {
+        return cartItemService.removeItemFromCart(id);
+    }
+
+    @PutMapping("/quantity")
+    public ResponseEntity<Void> changeQuantity(@RequestParam("ci_id") Long cid,@RequestParam("quantity") int quantity) {
+        return cartItemService.changeQuantity(cid,quantity);
     }
 
 }
