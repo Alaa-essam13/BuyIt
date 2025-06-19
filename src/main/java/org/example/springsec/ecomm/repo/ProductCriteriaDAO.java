@@ -88,27 +88,29 @@ public class ProductCriteriaDAO {
         return em.createQuery(cq).getSingleResult();
     }
 
-    Page<Product> sortProducts(Pageable pageable, SortReq sortReq) {
+    public Page<Product> sortProducts(SortReq sortReq,Pageable pageable) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Product> cq = cb.createQuery(Product.class);
         Root<Product> root = cq.from(Product.class);
         cq.groupBy(root.get("id"));
-        if(sortReq.getField().equals("rev")){
-            Join<Product, Review> joinBrand = root.join("reviews");
-            cq.orderBy(cb.desc(joinBrand.get("id")));
-        }else if(sortReq.getField().equals("date")){
+        switch (sortReq.getField()) {
+            case "rev" -> {
+                Join<Product, Review> joinBrand = root.join("reviews");
+                cq.orderBy(cb.desc(joinBrand.get("id")));
+            }
+            case "date" -> {
+            }
+            case "cat" -> {
 
-        }else if(sortReq.getField().equals("cat")){
-
-        }else {
-            cq.orderBy(cb.desc(root.get("id")));
+            }
+            default -> cq.orderBy(cb.desc(root.get("id")));
         }
 
         TypedQuery<Product> query = em.createQuery(cq);
         query.setFirstResult((int) pageable.getOffset());
         query.setMaxResults(pageable.getPageSize());
 
-        Long total=countProductsForSorting();
+        long total=countProductsForSorting();
 
        return new PageImpl<>(query.getResultList(), pageable, total);
 

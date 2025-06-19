@@ -2,8 +2,15 @@ package org.example.springsec.ecomm.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.springsec.ecomm.dto.ProductDto;
+import org.example.springsec.ecomm.dto.SearchReq;
+import org.example.springsec.ecomm.dto.SortReq;
 import org.example.springsec.ecomm.entity.Product;
+import org.example.springsec.ecomm.repo.ProductCriteriaDAO;
 import org.example.springsec.ecomm.repo.ProductRepo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +21,7 @@ import java.util.List;
 public class ProductService {
 
     private final ProductRepo  productRepo;
+    private final ProductCriteriaDAO productCriteriaDAO;
 
     public List<ProductDto> getAllByBrandId(Long brandId) {
         return productRepo.findByBrand_Id(brandId);
@@ -52,6 +60,32 @@ public class ProductService {
 
     public List<ProductDto> getAll() {
         return productRepo.findallProducts();
+    }
+
+    public Page<Product> searchProducts(SearchReq searchReq,int page, int size,String sortType) {
+
+        Sort sort;
+        if(sortType.equals("DES")){
+            sort = Sort.by(Sort.Direction.DESC);
+        }else {
+            sort = Sort.by(Sort.Direction.ASC);
+        }
+        Pageable pg= PageRequest.of(page,size,sort);
+
+        return productCriteriaDAO.searchForProduct(searchReq, pg);
+    }
+
+    public Page<Product> getAllProductsWithSorting(SortReq sortReq, int page, int size, String sortType) {
+
+        Sort sort;
+        if(sortType.equals("DES")){
+            sort = Sort.by(Sort.Direction.DESC);
+        }else {
+            sort = Sort.by(Sort.Direction.ASC);
+        }
+        Pageable pg= PageRequest.of(page,size,sort);
+
+        return productCriteriaDAO.sortProducts(sortReq, pg);
     }
 
 
