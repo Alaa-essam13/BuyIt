@@ -6,6 +6,7 @@ import org.example.springsec.ecomm.dto.PaymentMethod;
 import org.example.springsec.ecomm.entity.Order;
 import org.example.springsec.ecomm.entity.User;
 import org.example.springsec.ecomm.repo.OrderRepo;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,8 +20,11 @@ public class OrderService {
         return orderRepo.findById(id).orElseThrow();
     }
 
-    public void saveOrder(OrderDto orderDto, Long userId) {
+    public ResponseEntity<Void> saveOrder(OrderDto orderDto, Long userId) {
         User user = userService.getUserById(userId);
+        if(user.getAddresses().isEmpty()){
+            return ResponseEntity.badRequest().build();
+        }
         orderRepo.save(Order.builder()
                 .totalPrice(orderDto.getTotalPrice())
                 .status(orderDto.getStatus())
@@ -29,6 +33,7 @@ public class OrderService {
                 .address(user.getAddresses().get(0).toString())
                 .user(user)
                 .build());
+        return ResponseEntity.ok().build();
     }
 
 }
