@@ -47,9 +47,9 @@ Order → Payment
 - 🧠 **Java 17**
 - ⚙️ **Spring Boot**
 - 🗃 **Spring Data JPA**
-- 🐘 **PostgreSQL** or 🐬 **MySQL**
+- 🐘 **PostgreSQL**
 - 🧵 **Lombok**
-- 🔐 (Optional) **Spring Security + JWT**
+- 🔐 **Spring Security + JWT**
 - 🌐 **REST API** (JSON via Jackson)
 
 ---
