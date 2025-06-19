@@ -4,8 +4,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
-import org.example.springsec.ecomm.dto.SearchReq;
-import org.example.springsec.ecomm.dto.SortReq;
 import org.example.springsec.ecomm.entity.Brand;
 import org.example.springsec.ecomm.entity.Category;
 import org.example.springsec.ecomm.entity.Product;
@@ -23,7 +21,7 @@ public class ProductCriteriaDAO {
 
     private final EntityManager em;
 
-    public Page<Product> searchForProduct(SearchReq searchReq, Pageable pageable) {
+    public Page<Product> searchForProduct(String searchReq, Pageable pageable) {
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Product> cq = cb.createQuery(Product.class);
@@ -35,14 +33,10 @@ public class ProductCriteriaDAO {
 
         List<Predicate> predicates = new ArrayList<>();
 
-        if (searchReq.getTitle() != null && !searchReq.getTitle().isEmpty()) {
-            predicates.add(cb.like(root.get("title"), searchReq.getTitle()));
-        }
-        if (searchReq.getCategoryName() != null && !searchReq.getCategoryName().isEmpty()) {
-            predicates.add(cb.like(joinCategory.get("name"), searchReq.getCategoryName()));
-        }
-        if (searchReq.getBrandName() != null && !searchReq.getBrandName().isEmpty()) {
-            predicates.add(cb.like(joinBrand.get("name"), searchReq.getBrandName()));
+        if (searchReq!= null && !searchReq.isEmpty()) {
+            predicates.add(cb.like(root.get("title"), searchReq));
+            predicates.add(cb.like(joinCategory.get("name"), searchReq));
+            predicates.add(cb.like(joinBrand.get("name"), searchReq));
         }
         if(!predicates.isEmpty()){
             cq.where(cb.or(predicates.toArray(new Predicate[0])));
@@ -60,7 +54,7 @@ public class ProductCriteriaDAO {
 
     }
 
-    private long countProducts(SearchReq searchReq) {
+    private long countProducts(String searchReq) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
         Root<Product> root = cq.from(Product.class);
@@ -70,14 +64,10 @@ public class ProductCriteriaDAO {
 
         List<Predicate> predicates = new ArrayList<>();
 
-        if (searchReq.getTitle() != null && !searchReq.getTitle().isEmpty()) {
-            predicates.add(cb.like(root.get("title"), "%" + searchReq.getTitle() + "%"));
-        }
-        if (searchReq.getCategoryName() != null && !searchReq.getCategoryName().isEmpty()) {
-            predicates.add(cb.like(joinCategory.get("name"), "%" + searchReq.getCategoryName() + "%"));
-        }
-        if (searchReq.getBrandName() != null && !searchReq.getBrandName().isEmpty()) {
-            predicates.add(cb.like(joinBrand.get("name"), "%" + searchReq.getBrandName() + "%"));
+        if (searchReq != null && !searchReq.isEmpty()) {
+            predicates.add(cb.like(root.get("title"), searchReq));
+            predicates.add(cb.like(joinCategory.get("name"), searchReq));
+            predicates.add(cb.like(joinBrand.get("name"), searchReq));
         }
 
         if (!predicates.isEmpty()) {
@@ -88,12 +78,12 @@ public class ProductCriteriaDAO {
         return em.createQuery(cq).getSingleResult();
     }
 
-    public Page<Product> sortProducts(SortReq sortReq,Pageable pageable) {
+    public Page<Product> sortProducts(String sortReq,Pageable pageable) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Product> cq = cb.createQuery(Product.class);
         Root<Product> root = cq.from(Product.class);
         cq.groupBy(root.get("id"));
-        switch (sortReq.getField()) {
+        switch (sortReq) {
             case "rev" -> {
                 Join<Product, Review> joinBrand = root.join("reviews");
                 cq.orderBy(cb.desc(joinBrand.get("id")));

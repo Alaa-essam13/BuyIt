@@ -6,7 +6,5 @@ import lombok.Setter;
 @Setter
 @Getter
 public class SearchReq {
-    private String title;
-    private String categoryName;
-    private String brandName;
+    private String field;
 }

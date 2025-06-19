@@ -62,28 +62,21 @@ public class ProductService {
         return productRepo.findallProducts();
     }
 
-    public Page<Product> searchProducts(SearchReq searchReq,int page, int size,String sortType) {
+    public Page<Product> searchProducts(String searchReq,int page, int size,String sortType) {
 
         Sort sort;
         if(sortType.equals("DES")){
-            sort = Sort.by(Sort.Direction.DESC);
+            sort = Sort.by(Sort.Direction.DESC,"name");
         }else {
-            sort = Sort.by(Sort.Direction.ASC);
+            sort = Sort.by(Sort.Direction.ASC,"name");
         }
         Pageable pg= PageRequest.of(page,size,sort);
 
         return productCriteriaDAO.searchForProduct(searchReq, pg);
     }
 
-    public Page<Product> getAllProductsWithSorting(SortReq sortReq, int page, int size, String sortType) {
-
-        Sort sort;
-        if(sortType.equals("DES")){
-            sort = Sort.by(Sort.Direction.DESC);
-        }else {
-            sort = Sort.by(Sort.Direction.ASC);
-        }
-        Pageable pg= PageRequest.of(page,size,sort);
+    public Page<Product> getAllProductsWithSorting(String sortReq, int page, int size, String sortType) {
+        Pageable pg= PageRequest.of(page,size);
 
         return productCriteriaDAO.sortProducts(sortReq, pg);
     }
