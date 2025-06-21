@@ -9,6 +9,8 @@ import org.example.springsec.ecomm.repo.OrderRepo;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class OrderService {
@@ -34,6 +36,10 @@ public class OrderService {
                 .user(user)
                 .build());
         return ResponseEntity.ok().build();
+    }
+
+    public ResponseEntity<List<OrderDto>> getOrdersByUserId(Long userId) {
+        return ResponseEntity.ok(orderRepo.getOrdersOfUser(userId));
     }
 
 }

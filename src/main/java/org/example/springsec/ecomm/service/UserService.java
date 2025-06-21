@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import org.example.springsec.ecomm.dto.UserDto;
 import org.example.springsec.ecomm.entity.Cart;
 import org.example.springsec.ecomm.entity.User;
+import org.example.springsec.ecomm.error.RecordNotFoundException;
 import org.example.springsec.ecomm.repo.UserRepo;
 import org.example.springsec.ecomm.validators.UserValidator;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,7 @@ public class UserService {
     }
 
     public User getUserById(@NotNull Long id) {
-        return userRepo.findById(id).orElseThrow();
+        return userRepo.findById(id).orElseThrow(()->new RecordNotFoundException("this id "+id+" is invalid"));
     }
 
     public UserDto getById(@NotNull Long id) {
@@ -55,11 +56,7 @@ public class UserService {
     }
 
     public void deleteUserById(@NotNull Long id) {
-        if (getUserById(id) != null) {
             userRepo.deleteById(id);
-        } else {
-
-        }
     }
 
     @Transactional
@@ -67,15 +64,12 @@ public class UserService {
         User user = getUserById(id);
         if (userDto.getEmail() != null) {
             user.setEmail(userDto.getEmail());
-            System.out.println("Email ");
         }
         if (userDto.getPassword() != null) {
             user.setPassword(userDto.getPassword());
-            System.out.println("Password ");
         }
         if (userDto.getUsername() != null) {
             user.setUsername(userDto.getUsername());
-            System.out.println("Username ");
         }
         userRepo.save(user);
     }

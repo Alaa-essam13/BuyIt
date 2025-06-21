@@ -5,11 +5,12 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
 @Table(name = "_review")
-@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
@@ -22,7 +23,7 @@ public class Review {
     @Max(5)
     private Double rating;
     private String comment;
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
