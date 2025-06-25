@@ -41,7 +41,11 @@ Order → Payment
 
 
 ---
+## ERD
 
+![ERD]("src/main/resources/static/erd.png")
+
+---
 ## ⚙️ Tech Stack
 
 - 🧠 **Java 17**
