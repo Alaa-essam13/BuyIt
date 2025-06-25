@@ -30,7 +30,7 @@ public class CategoryService {
                     .description(categoryDto.getDescription()).build();
             return ResponseEntity.ok().build();
         }
-        return ResponseEntity.status(HttpStatus.FOUND).build();
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 
     public CategoryDto getById(Long id) {

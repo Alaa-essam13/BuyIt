@@ -6,6 +6,9 @@ import org.example.springsec.ecomm.dto.PaymentMethod;
 import org.example.springsec.ecomm.entity.Order;
 import org.example.springsec.ecomm.entity.User;
 import org.example.springsec.ecomm.repo.OrderRepo;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +38,7 @@ public class OrderService {
                 .address(user.getAddresses().get(0).toString())
                 .user(user)
                 .build());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 
     public ResponseEntity<List<OrderDto>> getOrdersByUserId(Long userId) {
