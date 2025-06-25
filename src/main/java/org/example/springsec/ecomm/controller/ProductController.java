@@ -8,6 +8,7 @@ import org.example.springsec.ecomm.dto.SearchReq;
 import org.example.springsec.ecomm.dto.SortReq;
 import org.example.springsec.ecomm.entity.Product;
 import org.example.springsec.ecomm.service.ProductService;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -28,11 +29,12 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDto> get(@PathVariable Long id) {
+    public ResponseEntity<ProductDto> getProduct(@PathVariable Long id) {
         return ResponseEntity.ok(productService.getById(id));
     }
 
     @GetMapping("/brand/{id}")
+    @CacheEvict(value = "ProductsOfBrand",key = "#id")
     public ResponseEntity<List<ProductDto>> getProductDto(@PathVariable Long id) {
         return ResponseEntity.ok(productService.getAllByBrandId(id));
     }
