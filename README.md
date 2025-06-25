@@ -43,7 +43,7 @@ Order → Payment
 ---
 ## ERD
 
-![ERD]("src/main/resources/static/erd.png")
+![erd](https://github.com/user-attachments/assets/85d31ade-481f-462a-aa5f-054191fd689b)
 
 ---
 ## ⚙️ Tech Stack
