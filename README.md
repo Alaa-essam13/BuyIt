@@ -55,6 +55,7 @@ Order → Payment
 - 🧵 **Lombok**
 - 🔐 **Spring Security + JWT**
 - 🌐 **REST API** (JSON via Jackson)
+- 💾 **Redis**
 
 ---
 
