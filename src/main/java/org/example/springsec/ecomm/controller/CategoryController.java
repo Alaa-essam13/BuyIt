@@ -3,6 +3,7 @@ package org.example.springsec.ecomm.controller;
 import lombok.AllArgsConstructor;
 import org.example.springsec.ecomm.dto.CategoryDto;
 import org.example.springsec.ecomm.service.CategoryService;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,11 +24,13 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
+    @Cacheable(value = "Category",key = "#id")
     public ResponseEntity<CategoryDto> getCategoryDtoById(@PathVariable Long id){
         return ResponseEntity.ok(categoryService.getById(id));
     }
 
-    @PutMapping("/add")
+    @PostMapping("/add")
+    @CacheEvict(value = {"Categories","Category"},allEntries = true)
     public ResponseEntity<Void> putCategoryDto(@RequestBody CategoryDto categoryDto) {
         return categoryService.addCategory(categoryDto);
     }

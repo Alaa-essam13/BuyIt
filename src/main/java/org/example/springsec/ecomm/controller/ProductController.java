@@ -4,14 +4,10 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import org.example.springsec.ecomm.dto.ProductDto;
-import org.example.springsec.ecomm.dto.SearchReq;
-import org.example.springsec.ecomm.dto.SortReq;
 import org.example.springsec.ecomm.entity.Product;
 import org.example.springsec.ecomm.service.ProductService;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,7 +30,6 @@ public class ProductController {
     }
 
     @GetMapping("/brand/{id}")
-    @CacheEvict(value = "ProductsOfBrand",key = "#id")
     public ResponseEntity<List<ProductDto>> getProductDto(@PathVariable Long id) {
         return ResponseEntity.ok(productService.getAllByBrandId(id));
     }
